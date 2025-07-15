@@ -1,6 +1,4 @@
-import { saveMoviesToStorage } from './localStorageUtils'
 import type { Movie } from '../models/movie'
-import renderForm from '../components/form'
 
 export const submitForm = (
   formElement: HTMLFormElement,
@@ -38,9 +36,9 @@ export const submitForm = (
     } else {
       const newMovie: Movie = {
         id: crypto.randomUUID(),
-        name: name.value,
+        title: name.value,
         genre: genre.value,
-        year: year.value,
+        releaseYear: year.value,
         isWatched: isWatched.checked
       }
 
@@ -52,8 +50,6 @@ export const submitForm = (
       isWatched.checked = false
     }
 
-    saveMoviesToStorage(movies)
-
     render()
   }
 
@@ -61,30 +57,3 @@ export const submitForm = (
 
   return formElement
 }
-
-export const switchToEditForm = (
-  movie: Movie,
-  form: HTMLFormElement,
-  movies: Movie[],
-  app: HTMLElement | null,
-  table: HTMLElement,
-  render: () => void,
-  setCurrentMovie: (movie: Movie | null) => void
-) => {
-  if (!app) return
-
-  setCurrentMovie(movie)
-
-  const editForm = renderForm(movie)
-  const resetBtn = editForm.querySelector('#reset') as HTMLButtonElement
-
-  submitForm(editForm, movie, movies, render)
-
-  app.replaceChildren(editForm, table)
-
-  resetBtn?.addEventListener('click', () => {
-    setCurrentMovie(null)
-    app.replaceChildren(form, table)
-  })
-}
-

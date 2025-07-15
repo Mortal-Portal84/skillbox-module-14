@@ -8,7 +8,7 @@ export const sortCompare = (
 ): number => {
   const direction = order === 'ascending' ? 1 : -1
 
-  if (key === 'year') {
+  if (key === 'releaseYear') {
     return (new Date(a[key]).getTime() - new Date(b[key]).getTime()) * direction
   }
 

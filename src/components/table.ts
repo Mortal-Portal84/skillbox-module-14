@@ -10,8 +10,8 @@ export const renderTableRow = (
 
   movies.forEach((movie: Movie) => {
     const row = document.createElement('tr')
-    const { name, genre, year, isWatched } = movie
-    const rowData = [name, genre, year, isWatched]
+    const { title, genre, releaseYear, isWatched } = movie
+    const rowData = [title, genre, releaseYear, isWatched]
 
     rowData.forEach((cellData) => {
       const td = document.createElement('td')

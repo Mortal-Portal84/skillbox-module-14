@@ -1,7 +1,7 @@
 export type Movie = {
   id: string,
-  name: string,
+  title: string,
   genre: string,
-  year: string,
+  releaseYear: string,
   isWatched: boolean,
 }
