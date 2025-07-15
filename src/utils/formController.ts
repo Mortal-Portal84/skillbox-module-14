@@ -67,7 +67,6 @@ export const switchToEditForm = (
   form: HTMLFormElement,
   movies: Movie[],
   app: HTMLElement | null,
-  sorter: HTMLElement,
   table: HTMLElement,
   render: () => void,
   setCurrentMovie: (movie: Movie | null) => void
@@ -81,11 +80,11 @@ export const switchToEditForm = (
 
   submitForm(editForm, movie, movies, render)
 
-  app.replaceChildren(editForm, sorter, table)
+  app.replaceChildren(editForm, table)
 
   resetBtn?.addEventListener('click', () => {
     setCurrentMovie(null)
-    app.replaceChildren(form, sorter, table)
+    app.replaceChildren(form, table)
   })
 }
 

@@ -1,12 +1,10 @@
 import createButton from './ui/button'
-
 import type { Movie } from '../models/movie'
 
 export const renderTableRow = (
   tableBody: HTMLTableSectionElement,
   movies: Movie[],
   onDelete: (id: string) => void,
-  onEdit: (goods: Movie) => void
 ) => {
   tableBody.replaceChildren()
 
@@ -30,13 +28,11 @@ export const renderTableRow = (
     const actionTd = document.createElement('td')
     actionTd.className = 'table_actionTd'
 
-    const editBtn = createButton('button', 'edit', 'Изменить')
     const deleteBtn = createButton('button', 'delete', 'Удалить')
 
-    editBtn.addEventListener('click', () => onEdit(movie))
     deleteBtn.addEventListener('click', () => onDelete(movie.id))
 
-    actionTd.append(editBtn, deleteBtn)
+    actionTd.append(deleteBtn)
     row.appendChild(actionTd)
 
     tableBody.appendChild(row)

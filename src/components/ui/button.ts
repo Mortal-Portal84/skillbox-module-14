@@ -4,6 +4,7 @@ const createButton = (
   text: string
 ): HTMLButtonElement => {
   const button = document.createElement('button')
+  button.className = 'button'
   button.type = type
   button.id = id
   button.textContent = text

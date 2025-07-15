@@ -33,13 +33,28 @@ h1 {
   line-height: 1.1;
 }
 
-form {
-  padding: 20px;
-  margin-bottom: 20px;
+form, .filter__wrapper {
   text-align: left;
+  padding: 20px;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 0 5px #999;
+}
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.filter__wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter__wrapper .form__item:not(:first-child), select {
+  margin-left: 1em;
 }
 
 form label {
@@ -56,7 +71,7 @@ form input[type="text"] {
 }
 
 form input[type="checkbox"] {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 form input[type="submit"] {
@@ -65,6 +80,10 @@ form input[type="submit"] {
   padding: 10px 20px;
   border: 0;
   border-radius: 5px;
+}
+
+.filter, .table {
+  margin-top: 1.2em;
 }
 
 table {
@@ -86,28 +105,69 @@ th {
   color: #fff;
 }
 
-td {
-  vertical-align: top;
+input, select {
+  padding: 0.6em 1.2em;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1em;
+  font-family: inherit;
+  color: inherit;
+}
+
+select {
+  background-color: white;
 }
 
 button {
+  padding: 0.6em 1.2em;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 1em;
+  font-weight: bold;
+  font-family: inherit;
+  color: white;
+  background-color: #333;
   cursor: pointer;
+  transition: background-color 0.25s ease;
 }
 
-#reset {
-  display: block;
+button:hover {
+  background-color: #4f4e4e;
 }
 
-.sorter {
-  display: flex;
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
-.sorter select {
-  background-color: white;
-  border-radius: 4px;
-  border: solid 1px gray;
+button:active {
+  background-color: #1e1e1e;
 }
 
-.sorter button, #delete {
-  margin-left: 0.4em;
+button.add {
+  background-color: forestgreen;
+}
+
+button:not(:first-of-type) {
+  margin-left: 1em;
+}
+
+#name {
+  min-width: 35%;
+}
+
+#submit {
+  width: 100%;
+}
+
+#delete, #clear {
+  background-color: red;
+}
+
+#delete:hover, #clear:hover {
+  background-color: #f85252;
+}
+
+#delete:active, #clear:active {
+  background-color: #a80202;
 }

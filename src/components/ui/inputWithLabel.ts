@@ -2,7 +2,7 @@ const createInputWithLabel = (
   type: 'text' | 'email' | 'password' | 'range' | 'radio' | 'checkbox' | 'number',
   inputID: string,
   inputName: string,
-  labelText: string,
+  labelText: string | null,
   placeholder: string | null = null,
   isRequired: boolean = false,
   isChecked: boolean = false
@@ -21,17 +21,19 @@ const createInputWithLabel = (
   if (isRequired) input.required = true
   if (isChecked) input.checked = true
 
-  const label = document.createElement('label')
-  label.className = 'form__label'
-  label.htmlFor = inputID
+  if(labelText) {
+    const label = document.createElement('label')
+    label.className = 'form__label'
+    label.htmlFor = inputID
 
-  if (type === 'radio' || type === 'checkbox') {
-    label.textContent = labelText
-    wrapper.append(input, label)
-    input.value = label.textContent.toLowerCase()
-  } else {
-    label.textContent = `${labelText}: `
-    wrapper.append(label, input)
+    if (type === 'radio' || type === 'checkbox') {
+      label.textContent = labelText
+      wrapper.append(input, label)
+      input.value = label.textContent.toLowerCase()
+    } else {
+      label.textContent = `${labelText}: `
+      wrapper.append(label, input)
+    }
   }
 
   if (type === 'range') {
@@ -45,6 +47,8 @@ const createInputWithLabel = (
     input.min = '1900'
     input.step = '1'
   }
+
+  wrapper.append(input)
 
   return wrapper
 }
