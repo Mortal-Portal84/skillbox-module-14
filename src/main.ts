@@ -2,7 +2,7 @@ import renderForm from './components/form'
 import renderTable, { renderTableRow } from './components/table'
 import renderFilter from './components/filter'
 
-import { filterMoviesByParameters, getMovies, Movie } from './api'
+import { getMovies, Movie } from './api'
 import handleDeleteMovie from './utils/tableControlers'
 import submitForm from './utils/formController'
 
@@ -18,7 +18,7 @@ const tableBody = table.querySelector('tbody')
 const handleFilter = async (params: Partial<Movie>) => {
   Object.keys(params).length === 0
     ? movies = await getMovies()
-    : movies = await filterMoviesByParameters(params)
+    : movies = await getMovies(params)
 
   await render()
 }
