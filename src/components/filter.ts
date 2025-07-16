@@ -4,7 +4,10 @@ import createButton from './ui/button'
 import { clearAllMovies, Movie } from '../api'
 import { validateTypedGenre, validateTypedName, validateTypedYear } from '../utils'
 
-const renderFilter = (onFilter: (movies: Partial<Movie>) => void) => {
+const renderFilter = (
+  updateRows: (movies: Movie[]) => void,
+  getMovies: (params?: Partial<Movie>) => Promise<Movie[]>
+) => {
   const filterContainer = document.createElement('div')
   const filterWrapper = document.createElement('div')
   const nameInput = createInputWithLabel('text', 'name-filter', 'name-filter', null, 'Название фильма')
@@ -40,16 +43,20 @@ const renderFilter = (onFilter: (movies: Partial<Movie>) => void) => {
   filterContainer.append(filterWrapper, clearButton)
 
   let debounceTimeout: number | null = null
-  const triggerFilter = () => {
+  const triggerFilter = async () => {
     const cleanedFilter: Partial<Movie> = {}
 
     Object.entries(filteredMovies).forEach(([key, value]) => {
       if (value !== '' && value !== undefined) {
-        (cleanedFilter as any)[key] = value;
+        (cleanedFilter as any)[key] = value
       }
     })
 
-    onFilter(cleanedFilter)
+    const movies = Object.keys(cleanedFilter).length
+      ? await getMovies(cleanedFilter)
+      : await getMovies()
+
+    updateRows(movies)
   }
 
   const debounceFilter = () => {

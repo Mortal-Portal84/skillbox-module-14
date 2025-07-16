@@ -2,45 +2,10 @@ import createButton from './ui/button'
 
 import type { Movie } from '../api'
 
-export const renderTableRow = (
-  tableBody: HTMLTableSectionElement,
+export const renderTable = (
   movies: Movie[],
-  onDelete: (id: string) => void,
-) => {
-  tableBody.replaceChildren()
-
-  movies.forEach((movie: Movie) => {
-    const row = document.createElement('tr')
-    const { title, genre, releaseYear, isWatched } = movie
-    const rowData = [title, genre, releaseYear, isWatched]
-
-    rowData.forEach((cellData) => {
-      const td = document.createElement('td')
-
-      if (typeof cellData === 'boolean') {
-        td.textContent = cellData ? 'Да' : 'Нет'
-      } else {
-        td.textContent = String(cellData)
-      }
-
-      row.appendChild(td)
-    })
-
-    const actionTd = document.createElement('td')
-    actionTd.className = 'table_actionTd'
-
-    const deleteBtn = createButton('button', 'delete', 'Удалить')
-
-    deleteBtn.addEventListener('click', () => onDelete(movie.id))
-
-    actionTd.append(deleteBtn)
-    row.appendChild(actionTd)
-
-    tableBody.appendChild(row)
-  })
-}
-
-const renderTable = (): HTMLTableElement => {
+  onDelete: (id: string) => void
+): { table: HTMLTableElement; updateRows: (movies: Movie[]) => void } => {
   const table = document.createElement('table')
   table.className = 'table'
 
@@ -64,10 +29,39 @@ const renderTable = (): HTMLTableElement => {
   })
 
   thead.appendChild(headerRow)
+
   const tbody = document.createElement('tbody')
   table.append(thead, tbody)
 
-  return table
+  const updateRows = (movies: Movie[]) => {
+    tbody.replaceChildren()
+
+    movies.forEach((movie: Movie) => {
+      const row = document.createElement('tr')
+      const { title, genre, releaseYear, isWatched } = movie
+      const rowData = [title, genre, releaseYear, isWatched]
+
+      rowData.forEach((cellData) => {
+        const td = document.createElement('td')
+        td.textContent = typeof cellData === 'boolean' ? (cellData ? 'Да' : 'Нет') : String(cellData)
+        row.appendChild(td)
+      })
+
+      const actionTd = document.createElement('td')
+      actionTd.className = 'table_actionTd'
+
+      const deleteBtn = createButton('button', 'delete', 'Удалить')
+      deleteBtn.addEventListener('click', () => onDelete(movie.id))
+      actionTd.append(deleteBtn)
+
+      row.appendChild(actionTd)
+      tbody.appendChild(row)
+    })
+  }
+
+  updateRows(movies) // отрисовываем начальные данные
+
+  return { table, updateRows }
 }
 
 export default renderTable
