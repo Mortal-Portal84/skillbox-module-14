@@ -2,44 +2,51 @@ import renderForm from './components/form'
 import renderTable, { renderTableRow } from './components/table'
 import renderFilter from './components/filter'
 
-import type { Movie } from './models/movie'
+import { Movie } from './models/movie'
+import { filterMoviesByParameters, getMovies } from './api/client'
 import { handleDeleteMovie } from './utils/tableControlers'
 import { submitForm } from './utils/formController'
 
 import './style.css'
-import { addMovie, getMovies } from './api/client'
 
-let movies: Movie[] = await getMovies()
-let currentMovie: Movie | null = null
+let movies: Movie[] = []
 
 const app = document.getElementById('app')
 const form = renderForm()
-const filter = renderFilter()
 const table = renderTable()
 const tableBody = table.querySelector('tbody')
 
-const render = () => {
+const handleFilter = async (params: Partial<Movie>) => {
+  Object.keys(params).length === 0
+    ? movies = await getMovies()
+    : movies = await filterMoviesByParameters(params)
+
+  await render()
+}
+
+const render = async () => {
   if (!tableBody) return
 
   renderTableRow(
     tableBody,
     movies,
-    (id: string) => handleDeleteMovie(movies, id, render)
+    async (id: string) => handleDeleteMovie(
+      id,
+      render,
+      (newMovies) => movies = newMovies)
   )
 }
 
-submitForm(form, currentMovie, movies, render)
+const initializeApp = async () => {
+  movies = await getMovies()
 
-app?.append(form, filter, table)
+  submitForm(form, initializeApp)
 
-render()
+  app?.replaceChildren(form, filter, table)
 
-const testMovie: Movie = {
-  id: '1365',
-  title: 'Фильм 3',
-  genre: 'Комедия',
-  isWatched: false,
-  releaseYear: '2024'
+  await render()
 }
 
-addMovie(testMovie)
+const filter = renderFilter(handleFilter)
+
+initializeApp()

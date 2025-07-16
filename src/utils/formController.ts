@@ -1,12 +1,11 @@
 import type { Movie } from '../models/movie'
+import { addMovie } from '../api/client'
 
 export const submitForm = (
   formElement: HTMLFormElement,
-  currentMovie: Movie | null,
-  movies: Movie[],
-  render: () => void
+  initApp: () => void
 ) => {
-  const handleSubmit = (e: Event) => {
+  const handleSubmit = async (e: Event) => {
     e.preventDefault()
 
     const form = e.currentTarget as HTMLFormElement
@@ -20,37 +19,20 @@ export const submitForm = (
     const year = form.querySelector('#year') as HTMLInputElement
     const isWatched = form.querySelector('#isWatched') as HTMLInputElement
 
-    if (currentMovie) {
-      const updatedMovie = {
-        ...currentMovie,
-        name: name.value,
-        genre: genre.value,
-        year: year.value,
-        isWatched: isWatched.checked
-      }
-
-      const index = movies.findIndex(movie => movie.id === currentMovie.id)
-      if (index !== -1) {
-        movies[index] = updatedMovie
-      }
-    } else {
-      const newMovie: Movie = {
-        id: crypto.randomUUID(),
+    const newMovie: Omit<Movie, 'id'> = {
         title: name.value,
         genre: genre.value,
         releaseYear: year.value,
         isWatched: isWatched.checked
       }
 
-      movies.unshift(newMovie)
-
-      name.value = ''
-      genre.value = ''
-      year.value = ''
-      isWatched.checked = false
+    try {
+      await addMovie(newMovie)
+      form.reset()
+      initApp()
+    } catch (err) {
+      console.error('Ошибка при добавлении фильма:', err)
     }
-
-    render()
   }
 
   formElement.addEventListener('submit', handleSubmit)
