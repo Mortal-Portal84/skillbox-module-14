@@ -1,4 +1,4 @@
-import { Movie } from '../models/movie'
+import Movie from './movie'
 
 const baseURL: string = 'https://sb-film.skillbox.cc/films'
 const email = 'stalker10eg@mail.ru'
@@ -43,7 +43,6 @@ export const clearAllMovies = async () => {
     }
   })
 }
-
 
 export const filterMoviesByParameters = async (params: {
   title?: string;

@@ -1,7 +1,6 @@
-import type { Movie } from '../models/movie'
-import { addMovie } from '../api/client'
+import { addMovie, Movie } from '../api'
 
-export const submitForm = (
+const submitForm = (
   formElement: HTMLFormElement,
   initApp: () => void
 ) => {
@@ -39,3 +38,5 @@ export const submitForm = (
 
   return formElement
 }
+
+export default submitForm

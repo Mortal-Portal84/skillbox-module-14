@@ -2,10 +2,9 @@ import renderForm from './components/form'
 import renderTable, { renderTableRow } from './components/table'
 import renderFilter from './components/filter'
 
-import { Movie } from './models/movie'
-import { filterMoviesByParameters, getMovies } from './api/client'
-import { handleDeleteMovie } from './utils/tableControlers'
-import { submitForm } from './utils/formController'
+import { filterMoviesByParameters, getMovies, Movie } from './api'
+import handleDeleteMovie from './utils/tableControlers'
+import submitForm from './utils/formController'
 
 import './style.css'
 
@@ -23,6 +22,8 @@ const handleFilter = async (params: Partial<Movie>) => {
 
   await render()
 }
+
+const filter = renderFilter(handleFilter)
 
 const render = async () => {
   if (!tableBody) return
@@ -46,7 +47,5 @@ const initializeApp = async () => {
 
   await render()
 }
-
-const filter = renderFilter(handleFilter)
 
 initializeApp()

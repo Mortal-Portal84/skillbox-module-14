@@ -1,5 +1,6 @@
 import createButton from './ui/button'
-import type { Movie } from '../models/movie'
+
+import type { Movie } from '../api'
 
 export const renderTableRow = (
   tableBody: HTMLTableSectionElement,

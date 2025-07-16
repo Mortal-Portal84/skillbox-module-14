@@ -1,7 +1,6 @@
-import { deleteMovie, getMovies } from '../api/client'
-import { Movie } from '../models/movie'
+import { deleteMovie, getMovies, Movie } from '../api'
 
-export const handleDeleteMovie = async (
+const handleDeleteMovie = async (
   id: string,
   render: () => void,
   updateMovies: (newMovies: Movie[]) => void
@@ -15,4 +14,4 @@ export const handleDeleteMovie = async (
   render()
 }
 
-
+export default handleDeleteMovie

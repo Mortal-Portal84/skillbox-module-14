@@ -1,6 +1,7 @@
 import createInputWithLabel from './ui/inputWithLabel'
 import createButton from './ui/button'
-import { validateTypedGenre, validateTypedName, validateTypedYear } from '../utils/helpers'
+
+import { validateTypedGenre, validateTypedName, validateTypedYear } from '../utils'
 
 const renderForm = () => {
   const form: HTMLFormElement = document.createElement('form')
