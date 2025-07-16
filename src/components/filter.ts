@@ -1,12 +1,10 @@
 import createInputWithLabel from './ui/inputWithLabel'
 import createButton from './ui/button'
-
 import { clearAllMovies, Movie } from '../api'
 import { validateTypedGenre, validateTypedName, validateTypedYear } from '../utils'
 
 const renderFilter = (
-  updateRows: (movies: Movie[]) => void,
-  getMovies: (params?: Partial<Movie>) => Promise<Movie[]>
+  onFilterChange: (params: Partial<Movie>) => Promise<void>
 ) => {
   const filterContainer = document.createElement('div')
   const filterWrapper = document.createElement('div')
@@ -52,11 +50,7 @@ const renderFilter = (
       }
     })
 
-    const movies = Object.keys(cleanedFilter).length
-      ? await getMovies(cleanedFilter)
-      : await getMovies()
-
-    updateRows(movies)
+    await onFilterChange(cleanedFilter)
   }
 
   const debounceFilter = () => {
@@ -100,9 +94,13 @@ const renderFilter = (
   })
 
   clearButton.addEventListener('click', async () => {
-    (nameInput.querySelector('input') as HTMLInputElement).value = '';
-    (genreInput.querySelector('input') as HTMLInputElement).value = '';
-    (yearInput.querySelector('input') as HTMLInputElement).value = '';
+    const nameInputElement = nameInput.querySelector('input')
+    const genreInputElement = genreInput.querySelector('input')
+    const yearInputElement = yearInput.querySelector('input')
+
+    if (nameInputElement) nameInputElement.value = ''
+    if (genreInputElement) genreInputElement.value = ''
+    if (yearInputElement) yearInputElement.value = ''
     select.value = 'all'
 
     Object.keys(filteredMovies).forEach(key => {
@@ -110,8 +108,7 @@ const renderFilter = (
     })
 
     await clearAllMovies()
-
-    triggerFilter()
+    await triggerFilter()
   })
 
   return filterContainer

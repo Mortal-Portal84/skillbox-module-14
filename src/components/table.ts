@@ -1,10 +1,9 @@
+import { Movie } from '../api'
+import { deleteMovie } from '../api'
 import createButton from './ui/button'
 
-import type { Movie } from '../api'
-
 export const renderTable = (
-  movies: Movie[],
-  onDelete: (id: string) => void
+  onUpdate: () => void
 ): { table: HTMLTableElement; updateRows: (movies: Movie[]) => void } => {
   const table = document.createElement('table')
   table.className = 'table'
@@ -51,15 +50,16 @@ export const renderTable = (
       actionTd.className = 'table_actionTd'
 
       const deleteBtn = createButton('button', 'delete', 'Удалить')
-      deleteBtn.addEventListener('click', () => onDelete(movie.id))
+      deleteBtn.addEventListener('click', async () => {
+        await deleteMovie(movie.id)
+        onUpdate() // Сообщаем main.ts, что нужно обновиться
+      })
       actionTd.append(deleteBtn)
 
       row.appendChild(actionTd)
       tbody.appendChild(row)
     })
   }
-
-  updateRows(movies) // отрисовываем начальные данные
 
   return { table, updateRows }
 }
